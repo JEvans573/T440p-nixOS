@@ -1,0 +1,39 @@
+#various games and their state of playability with steam flatpak on T440p, Intel i7 4600M (HD graphics 4600), NixOS, 12GB RAM, Wayland
+
+Sid Meier's Civilization V: Working, linux native
+Shovel Knight Treasure Trove: Working, linux native
+Peggle: Working, windows compatability layer
+Undertale: Working, linux native
+Sonic CD: borked
+Pseudoregalia: borked
+Fallout New Vegas: borked
+Analogue a Hate Story: working, but plays badly with dual monitors
+Angels with Scaly Wings: working
+Atlyss: borked
+Cave Story: linux version borked, windows version working
+Celeste: oddly enough, working
+Chantelise: working
+Deltarune: borked
+Digimon Story Cyber Sleuth: working.  Playability not yet tested
+Disco Elysium: Loading with Proton 10, not loading with at least some others + default.  Playability not yet tested.  Might try again after upgrading memory to full 16GB.  Probably not a good device to play on regardless.
+Dragon A Game About a Dragon: working with proton 10
+Golden Treasure The Great Green: borked
+Hate Plus: working, but plays badly with dual monitors
+Kane and Lynch 2 Dog Days: borked
+Laika Aged through Blood: borked
+The Murder of Sonic the Hedgehog: borked
+Neofeud: not working, but not-works the best with proton 10 and 9
+Never Alone (Kisima Ingitchuna): working
+Night in the Woods: loading.  Seems fully playable, but not intensely tested
+Radiant Silvergun: borked
+Recettear An Item Shop's Tale: working
+Shadowrun Dragonfall: linux native version borked, windows version throwing OpenGL error
+Sid Meier's Alpha Centauri: working
+
+Overall takeaway: Haswell generation intel graphics have experienced some strange and poorly documented deprecation over time, where the code exists to make them run opengl and directx:
+
+1. In a way it used to be able to
+2. In slightly more cases than they currently can
+3. In a way that's deployed exlusively on some hidden branch of an unknown repository, inaccessible to any linux default repository and only known to even exist through diving deep into every search engine, using search techniques long forgotten and rendered inconsistently useful due to the total destruction of functional search algorithms by financial incentives and AI.
+
+Most of the games here should work, but getting them to do so is a bit too esoteric for the payoff for me right now.  Sorry.

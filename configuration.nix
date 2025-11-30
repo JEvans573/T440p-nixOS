@@ -72,8 +72,15 @@
   enable32Bit = true;
   extraPackages = with pkgs; [
     intel-media-sdk
-   ];
+    intel-ocl
+    libva-vdpau-driver
+    intel-vaapi-driver
+      ];
   };
+
+
+  # setting open source intel driver with Glamor (OpenGL acceleration)
+  # services.xserver.videoDrivers = [ "modesetting" ];
 
 
   # Enable acpid
@@ -124,7 +131,7 @@
   # Install firefox.
   programs.firefox.enable = false;
   programs.steam = {
-  enable = true;
+  enable = false;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
@@ -175,10 +182,10 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+   programs.gnupg.agent = {
+     enable = true;
+     enableSSHSupport = true;
+   };
 
   # List services that you want to enable:
 
