@@ -2,12 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+     # ./overlays.nix
     ];
 
   # Bootloader.
@@ -59,6 +60,13 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma6.enable = true;
 
+  # jellyfin
+  services.jellyfin = { 
+  enable = true;
+  openFirewall = true;
+  user = "alephwyr";
+   };
+
   # Enable hyprland for Steam
   programs.hyprland = {
     enable = true;
@@ -67,6 +75,7 @@
  };
   # Alleged Intel driver fix
   programs.gamemode.enable = true;
+  programs.gamescope.enable = true;
   hardware.graphics = {
   enable = true;
   enable32Bit = true;
@@ -81,7 +90,14 @@
 
   # setting open source intel driver with Glamor (OpenGL acceleration)
   # services.xserver.videoDrivers = [ "modesetting" ];
-
+  # ovpn config
+  services.openvpn.servers.vpn = {
+  config = "config /etc/openvpn/us_california.ovpn";
+  autoStart = false;
+  updateResolvConf = true;
+  # auth-user-pass = "/etc/openvpn/myvpn.cred";
+};
+ 
 
   # Enable acpid
   services.acpid.enable = true;
@@ -130,6 +146,9 @@
 
   # Install firefox.
   programs.firefox.enable = false;
+  programs.firejail.enable = true;
+  #openvpn3
+  programs.openvpn3.enable = true;
   programs.steam = {
   enable = false;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -177,7 +196,17 @@
   teams-for-linux
   zoom-us
   vlc
+  steam-devices-udev-rules
+  slack
+  heroic
+  lutris
+  jellyfin
+  jellyfin-web
+  jellyfin-ffmpeg
+  openvpn3
   ];
+
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

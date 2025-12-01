@@ -30,7 +30,8 @@ Recettear An Item Shop's Tale: working
 Shadowrun Dragonfall: linux native version borked, windows version throwing OpenGL error
 Sid Meier's Alpha Centauri: working
 
-Overall takeaway: Haswell generation intel graphics have experienced some strange and poorly documented deprecation over time, where the code exists to make them run opengl and directx:
+Overall takeaway: Haswell generation intel graphics have experienced some strange and poorly documented deprecation over time,
+where the code exists to make them run opengl and directx:
 
 1. In a way it used to be able to
 2. In slightly more cases than they currently can
