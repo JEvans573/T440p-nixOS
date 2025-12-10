@@ -27,6 +27,7 @@
   boot.initrd.luks.devices."luks-685a8ff6-38b6-4250-b78d-df36d567d9bf".keyFile = "/boot/crypto_keyfile.bin";
   networking.hostName = "nixos-alephwyr"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # networking.networkmanager.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -56,9 +57,19 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+# enable gnome-keyring screts vault
+  # services.gnome.gnome-keyring.enable = true;
+
+
+  # enable Sway
+  # programs.sway = {
+  #   enable = true;
+  #   wrapperFeatures.gtk = true;
+  # };
+
   # Enable the K Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # jellyfin
   services.jellyfin = { 
@@ -97,7 +108,18 @@
   updateResolvConf = true;
   # auth-user-pass = "/etc/openvpn/myvpn.cred";
 };
- 
+  # greetd
+   services.greetd.enable = true;
+
+   services.greetd.settings = {
+   default_session = {
+     command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd startplasma-wayland";
+     user = "greeter";
+   };
+}; 
+
+# security.polkit.enable = true;
+
 
   # Enable acpid
   services.acpid.enable = true;
@@ -143,6 +165,11 @@
     #  thunderbird
     ];
   };
+  #virtual machine stuff
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["alephwyr"];
+  virtualisation.libvirtd.enable = true;
+
 
   # Install firefox.
   programs.firefox.enable = false;
@@ -177,11 +204,17 @@
   libreoffice-fresh
   calibre
   openshot-qt
+  virt-manager
+  virt-viewer
   dosbox
   mednafen
   mednaffe
   pkgs.kdePackages.isoimagewriter
   pkgs.godotPackages_4_5.godot
+  # pkgs.kdePackages.networkmanager-qt
+  pkgs.kdePackages.kcalc
+  pkgs.kdePackages.partitionmanager
+  gimp-with-plugins
   lmms
   nicotine-plus
   gh
@@ -204,8 +237,18 @@
   jellyfin-web
   jellyfin-ffmpeg
   openvpn3
+  wg-netmanager
+  networkmanager-openvpn
+  grim
+  slurp
+  wl-clipboard
+  mako
+  sway
+  zfs
+  zfs-autobackup
+  zfs-prune-snapshots
+  linuxKernel.packages.linux_xanmod_stable.zfs_2_3
   ];
-
 
 
   # Some programs need SUID wrappers, can be configured further or are
