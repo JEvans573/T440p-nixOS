@@ -248,6 +248,25 @@
   zfs-autobackup
   zfs-prune-snapshots
   linuxKernel.packages.linux_xanmod_stable.zfs_2_3
+  #sway config
+  conky
+  waybar
+  waybar-mpris
+  wttrbar
+  rofi
+  rofi-vpn
+  rofi-calc
+  rofi-games
+  rofi-screenshot
+  rofi-power-menu
+  rofi-file-browser
+  rofi-network-manager
+  alacritty
+  clipman
+  mailspring #gmail
+  mako
+  redshift
+  lemurs
   ];
 
 
