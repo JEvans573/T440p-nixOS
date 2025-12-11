@@ -188,67 +188,77 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+  # command line things
   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   wget
   curl
   yarn
   yt-dlp
-  wine
   git
+  gh
   unzip
   neofetch
-  discord
-  vscode-with-extensions
-  geany
+  #game things
+  wine
   obs-studio
-  libreoffice-fresh
-  calibre
-  openshot-qt
-  virt-manager
-  virt-viewer
   dosbox
   mednafen
   mednaffe
-  pkgs.kdePackages.isoimagewriter
+  retroarch
+  vulkan-tools
+  heroic
+  lutris
+  steam-devices-udev-rules
+  #communications
+  discord
+  pkgs.libsForQt5.konversation
+  teams-for-linux
+  zoom-us
+  slack
+  #programming
+  vscode-with-extensions
+  geany
   pkgs.godotPackages_4_5.godot
+  #office and document
+  libreoffice-fresh
+  calibre
+  #media
+  vlc
+  #editing
+  openshot-qt
+  gimp-with-plugins
+  lmms
+  #virtualization
+  virt-manager
+  virt-viewer
+  #kde specific packages
+  pkgs.kdePackages.isoimagewriter
   # pkgs.kdePackages.networkmanager-qt
   pkgs.kdePackages.kcalc
   pkgs.kdePackages.partitionmanager
-  gimp-with-plugins
-  lmms
   nicotine-plus
-  gh
+  #network
   tor
-  retroarch
   fail2ban
   transmission_4-qt
-  pkgs.libsForQt5.konversation
-  vulkan-tools
   librewolf-unwrapped
   librewolf
-  teams-for-linux
-  zoom-us
-  vlc
-  steam-devices-udev-rules
-  slack
-  heroic
-  lutris
   jellyfin
   jellyfin-web
   jellyfin-ffmpeg
   openvpn3
   wg-netmanager
   networkmanager-openvpn
-  grim
-  slurp
-  wl-clipboard
-  mako
-  sway
+  #zfs config
   zfs
   zfs-autobackup
   zfs-prune-snapshots
   linuxKernel.packages.linux_xanmod_stable.zfs_2_3
   #sway config
+  sway
+  grim
+  slurp
+  wl-clipboard
   conky
   waybar
   waybar-mpris
@@ -264,9 +274,10 @@
   alacritty
   clipman
   mailspring #gmail
-  mako
   redshift
+  #login managers
   lemurs
+  greetd
   ];
 
 
