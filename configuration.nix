@@ -15,8 +15,12 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sdb";
   boot.loader.grub.useOSProber = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  #attempt at OpenBSD dual boot settings
+  # boot.loader.grub.extraEntries = "
+  # menuentry "OpenBSD (hd1,gpt
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   # Setup keyfile
   boot.initrd.secrets = {
     "/boot/crypto_keyfile.bin" = null;
@@ -60,16 +64,29 @@
 # enable gnome-keyring screts vault
   # services.gnome.gnome-keyring.enable = true;
 
+# zfs enable
+boot.supportedFilesystems = ["ext" "zfs" "vfat" ];
+networking.hostId = "b0df8406";
+boot.loader.grub.copyKernels = true;
+
+# shutdown commands for preserving zfs pool with external hdd dock
+ systemd.services.my-shutdown-script = {
+   serviceConfig.Type = "oneshot";
+   script = "zpool export -a | echo 'zpools exported' | tee /tmp/shutdown_log.txt ";
+   unitConfig.Conflicts = "reboot.target poweroff.target hibernate.target suspend.target";
+   unitConfig.Before = "reboot.target poweroff.target hibernate.target suspend.target";
+   wantedBy = [ "multi-user.target" ];
+};
 
   # enable Sway
-  # programs.sway = {
-  #   enable = true;
-  #   wrapperFeatures.gtk = true;
-  # };
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+   };
 
   # Enable the K Desktop Environment.
   # services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
 
   # jellyfin
   services.jellyfin = { 
@@ -77,6 +94,38 @@
   openFirewall = true;
   user = "alephwyr";
    };
+
+  # enable kubernetes
+  services.k3s.enable = true;
+  services.k3s.role = "server";
+  networking.firewall.allowedTCPPorts = [ 6443 ];
+
+  # enable fail2ban
+  services.fail2ban = {
+    enable = true;
+    # Ban IP after 3 failures
+    maxretry = 3;
+    bantime = "72h";
+    bantime-increment = {
+      enable = true;
+      # formula = "ban.Time * math.exp(float(ban.Count+1)*banFactor)/math.exp(1*banFactor)";
+      multipliers = "1 2 4 8 16 32 64";
+      overalljails = true;
+    };
+    #jails = {
+      #DEFAULT = {
+        # destemail = "root@127.0.0.1";
+        # sender = "root@${config.networking.hostName}.${config.networking.domain}";
+        # mta = "sendmail";
+        # };
+      # NixOS wiki says I don't need this but leaving it here for syntax reference
+      # ssh = {
+      #  enabled = true;
+      #  port = "ssh";
+      #  };
+      #};
+    };
+  # system.msmtp.enable = true;
 
   # Enable hyprland for Steam
   programs.hyprland = {
@@ -110,10 +159,19 @@
 };
   # greetd
    services.greetd.enable = true;
+  # lemurs
+  #services.lemurs = {
+  # enable = true;
+  # settings = {
+  #   title = "Father Osiris, bless us with immortality. The chances aren't great, maybe one in a million. But biologically speaking, those are pretty good odds";
+  #  title_color = "cyan";
+  #  };
+#};
 
+#startplasma-wayland for kde
    services.greetd.settings = {
    default_session = {
-     command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd startplasma-wayland";
+     command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway"; 
      user = "greeter";
    };
 }; 
@@ -160,7 +218,7 @@
   users.users.alephwyr = {
     isNormalUser = true;
     description = "Jessica Evans";
-    extraGroups = [ "networkmanager" "wheel" "disk" "audio" "video" "dialout"];
+    extraGroups = [ "networkmanager" "wheel" "disk" "audio" "video" "dialout" "seat"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -188,18 +246,26 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  # command line things
-  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  vim # command line things.  Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  bash
+  coreutils
   wget
   curl
+  rustup
+  clisp
+  python314
+  perl
+  scala_2_13
+  gdb
+  mysql84
   yarn
   yt-dlp
   git
   gh
   unzip
   neofetch
-  #game things
-  wine
+  system-sendmail
+  wine #game things
   obs-studio
   dosbox
   mednafen
@@ -209,36 +275,27 @@
   heroic
   lutris
   steam-devices-udev-rules
-  #communications
-  discord
-  pkgs.libsForQt5.konversation
+  discord #communications
+  pkgs.kdePackages.konversation
   teams-for-linux
   zoom-us
   slack
-  #programming
-  vscode-with-extensions
+  vscode-with-extensions #programming
   geany
-  pkgs.godotPackages_4_5.godot
-  #office and document
-  libreoffice-fresh
+  pkgs.godotPackages_4_4.godot
+  libreoffice-fresh #office and document
   calibre
-  #media
-  vlc
-  #editing
-  openshot-qt
+  vlc #media
+  openshot-qt #editing
   gimp-with-plugins
   lmms
-  #virtualization
-  virt-manager
+  virt-manager #virtualization
   virt-viewer
-  #kde specific packages
-  pkgs.kdePackages.isoimagewriter
-  # pkgs.kdePackages.networkmanager-qt
+  pkgs.kdePackages.isoimagewriter #kde specific packages
   pkgs.kdePackages.kcalc
   pkgs.kdePackages.partitionmanager
   nicotine-plus
-  #network
-  tor
+  tor #network
   fail2ban
   transmission_4-qt
   librewolf-unwrapped
@@ -249,13 +306,11 @@
   openvpn3
   wg-netmanager
   networkmanager-openvpn
-  #zfs config
-  zfs
+  zfs #zfs config
   zfs-autobackup
   zfs-prune-snapshots
   linuxKernel.packages.linux_xanmod_stable.zfs_2_3
-  #sway config
-  sway
+  sway #sway config
   grim
   slurp
   wl-clipboard
@@ -275,9 +330,8 @@
   clipman
   mailspring #gmail
   redshift
-  #login managers
-  lemurs
-  greetd
+  lemurs #login managers
+  # greetd
   ];
 
 
