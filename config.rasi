@@ -1,0 +1,10 @@
+configuration {
+
+modes: "window,run,ssh,drun,combi,windowcd,keys,filebrowser,recursivebrowser";
+combi-modi: "window,windowcd,filebrowser,recursivebrowser";
+font: "mono 12";
+location: 0;
+yoffset: 0;
+xoffset: 0;
+fixed-num-lines: true;
+}
