@@ -83,6 +83,7 @@ boot.loader.grub.copyKernels = true;
     enable = true;
     wrapperFeatures.gtk = true;
    };
+  programs.dconf.enable = true;
 
   # Enable the K Desktop Environment.
   # services.displayManager.sddm.wayland.enable = true;
@@ -175,9 +176,10 @@ boot.loader.grub.copyKernels = true;
      user = "greeter";
    };
 }; 
-
-# security.polkit.enable = true;
-
+  
+  #getting interoperability working with wayland and different window/desktop stacks
+  security.polkit.enable = true;
+  services.dbus.enable = true;
 
   # Enable acpid
   services.acpid.enable = true;
@@ -265,6 +267,8 @@ boot.loader.grub.copyKernels = true;
   unzip
   neofetch
   system-sendmail
+  glib
+  glib.dev
   wine #game things
   obs-studio
   dosbox
@@ -311,8 +315,20 @@ boot.loader.grub.copyKernels = true;
   zfs-prune-snapshots
   linuxKernel.packages.linux_xanmod_stable.zfs_2_3
   sway #sway config
+  swayidle
+  sway-audio-idle-inhibit
   grim
+  sway-contrib.grimshot
+  swayimg
+  swaybg
+  swayws
+  swaywsr
+  swaylock
+  sway-new-workspace
+  sway-audio-idle-inhibit
   slurp
+  mako
+  libnotify
   wl-clipboard
   conky
   waybar
@@ -329,7 +345,10 @@ boot.loader.grub.copyKernels = true;
   alacritty
   clipman
   mailspring #gmail
-  redshift
+  xdg-desktop-portal
+  xdg-desktop-portal-gtk
+  xdg-desktop-portal-wlr
+  lxappearance
   lemurs #login managers
   # greetd
   ];

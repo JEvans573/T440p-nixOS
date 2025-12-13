@@ -21,15 +21,16 @@ set $menu rofi -show combi -show-icons -sidebar-mode
 # launch on start
 exec alacritty
 exec alacritty
-exec redshift
-exec waybar
 exec conky
 exec nm-applet --indicator
+exec_always { 
+      mako 
+    } 
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /run/current-system/sw/share/backgrounds/sway/)
-output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg /home/alephwyr/Pictures/El-Capitan-Guadalupe-Mountains-National-Park.png fill
 #
 # Example configuration:
 #
@@ -41,10 +42,10 @@ output * bg /run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_19
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \
+          timeout 600 'swaylock -f -c 000000' \
+          timeout 1800 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+          before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -215,24 +216,20 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
+    bindsym Print exec grimshot
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+    swaybar_command waybar
     }
-}
+
+  # GTK theme
+   exec_always {
+   gsettings set org.gnome.desktop.interface gtk-theme 'Nordic'
+   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+   }
 
 include /etc/sway/config.d/*
