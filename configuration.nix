@@ -30,15 +30,18 @@
 
   boot.initrd.luks.devices."luks-685a8ff6-38b6-4250-b78d-df36d567d9bf".keyFile = "/boot/crypto_keyfile.bin";
   networking.hostName = "nixos-alephwyr"; # Define your hostname.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;
+  networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant. Conflict with networkmanager
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  services.connman.enable = true;
+  # services.connman.enable = true;
+
+  #network share attempt
+  networking.networkmanager.enable = true;
+  networking.hosts = {"10.0.0.150" = ["truenas"];};
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -65,9 +68,15 @@
   # services.gnome.gnome-keyring.enable = true;
 
 # zfs enable
-boot.supportedFilesystems = ["ext" "zfs" "vfat" ];
+boot.supportedFilesystems = ["ext" "zfs" "vfat" "nfs"];
 networking.hostId = "b0df8406";
 boot.loader.grub.copyKernels = true;
+
+# trueNAS remote share access
+boot.initrd = {
+  supportedFilesystems = [ "nfs" ];
+  kernelModules = [ "nfs" ];
+};
 
 # shutdown commands for preserving zfs pool with external hdd dock
  systemd.services.my-shutdown-script = {
@@ -245,6 +254,10 @@ boot.loader.grub.copyKernels = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  #gvfs and nfs for storage share guii
+  services.gvfs.enable = true;
+  services.samba.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -310,10 +323,12 @@ boot.loader.grub.copyKernels = true;
   openvpn3
   wg-netmanager
   networkmanager-openvpn
+  nfs-utils
   zfs #zfs config
   zfs-autobackup
   zfs-prune-snapshots
   linuxKernel.packages.linux_xanmod_stable.zfs_2_3
+  cifs-utils
   sway #sway config
   swayidle
   sway-audio-idle-inhibit
