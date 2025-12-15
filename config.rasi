@@ -9,4 +9,10 @@ xoffset: 0;
 fixed-num-lines: true;
 }
 
-@theme "/nix/store/7709w26jj56ym514bm5xlswwfjjx92ix-rofi-1.7.9/share/rofi/themes/arthur.rasi"
+element normal.normal {
+   background-color: #D3D3D34D;
+}
+element alternate.normal {
+   background-color: #A9A9A980;
+}
+@import "/nix/store/7709w26jj56ym514bm5xlswwfjjx92ix-rofi-1.7.9/share/rofi/themes/arthur.rasi"
